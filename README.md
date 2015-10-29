@@ -1,3 +1,24 @@
+# Changes for EGroupware Integrated Version
+changes:
+	These plugins need to be included to plugins directory:
+	-filetools 
+	-lineutils
+	-uploadimage
+	-widget
+	-pasteformword
+	-notification
+	-notificationaggregator
+	-fakeobjects
+	
+	Sample directory is removed.
+
+	aspell plugin is included to plugins and WSC (web spell checker) is removed and should not be included for security reasons.
+
+
+## Branches
+	- **stable/trunk** &ndash; Stable version with egw integrations
+
+
 # CKEditor 4 - The best browser-based WYSIWYG editor
 
 [![devDependency Status](https://david-dm.org/ckeditor/ckeditor-dev/dev-status.svg)](https://david-dm.org/ckeditor/ckeditor-dev#info=devDependencies)
