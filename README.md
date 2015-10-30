@@ -12,6 +12,11 @@
 	- **fakeobjects**
 	
 	- Sample directory is removed.
+	
+	###Removed plugins or php files:
+		- WSC
+		- codesnippetgeshi
+		- imgupload.php from imgupload plugin
 
 	- aspell plugin is included to plugins and WSC (web spell checker) is removed
 	 and should not be included for security reasons.
