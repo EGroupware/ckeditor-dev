@@ -1,23 +1,39 @@
-# Changes for EGroupware Integrated Version
-changes:
-	These plugins need to be included to plugins directory:
-	-filetools 
-	-lineutils
-	-uploadimage
-	-widget
-	-pasteformword
-	-notification
-	-notificationaggregator
-	-fakeobjects
-	
-	Sample directory is removed.
+# CKEditor Customized for EGroupware
 
-	aspell plugin is included to plugins and WSC (web spell checker) is removed and should not be included for security reasons.
+##Changes:
+	These plugins need to be included to plugins directory:
+	- **filetools** 
+	- **lineutils**
+	- **uploadimage**
+	- **widget**
+	- **pasteformword**
+	- **notification**
+	- **notificationaggregator**
+	- **fakeobjects**
+	
+	- Sample directory is removed.
+
+	- aspell plugin is included to plugins and WSC (web spell checker) is removed
+	 and should not be included for security reasons.
 
 
 ## Branches
 	- **stable/trunk** &ndash; Stable version with egw integrations
 
+## Clone the branch
+	In order to clone the trunk branch and make modification you need to run below commands
+
+	-> git clone https://github.com/EGroupware/ckeditor-dev.git
+	-> git branch trunk
+
+## How to build package
+	Run below command from cloned trunk branch
+	
+	~/ckeditor-dev$ -> ./dev/builder/build.sh
+
+	Built package will be released under ../dev/builder/released/
+
+	
 
 # CKEditor 4 - The best browser-based WYSIWYG editor
 
