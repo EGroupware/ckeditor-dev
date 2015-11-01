@@ -36,7 +36,7 @@
 	
 	~/ckeditor-dev$ -> ./dev/builder/build.sh
 
-	Built package will be released under ../dev/builder/released/
+	Built package will be released under ../dev/builder/release/
 
 	
 
