@@ -37,7 +37,19 @@
 
 	Built package will be released under ../dev/builder/release/
 
-	
+## How to tag a new release for use as svn:external in EGroupware release branch
+
+	# use sha1 from last commit in trunk
+	git tag -a 4.5.4-egw -m 'CKEditor 4.5.4 for EGroupware' 56b739524a673ad8aa5a8f16d988fe03e4994612
+	# update svn:externals in EGroupwar release branch
+	cd ~/epl-14.2/phpgwapi/js
+	svn propedit svn:externals .
+	#
+	# svn externals for phpgwapi/js
+	#
+	ckeditor  https://github.com/EGroupware/ckeditor-dev/tags/4.5.4-egw/dev/builder/release/ckeditor
+	# commit external
+	svn commit -m '* All apps: update CKEditor to version 4.5.4' .
 
 # CKEditor 4 - The best browser-based WYSIWYG editor
 
