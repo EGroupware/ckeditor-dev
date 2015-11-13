@@ -14,7 +14,6 @@
 	- Sample directory is removed.
 	
 	###Removed plugins or php files:
-		- WSC
 		- codesnippetgeshi
 		- imgupload.php from imgupload plugin
 
