@@ -1,1 +1,0 @@
-﻿CKEDITOR.plugins.add("aspell",{icons:"spellcheck",init:function(a){a.addCommand("aspell",new CKEDITOR.dialogCommand("aspell"));a.ui.addButton("SpellCheck",{label:"ASpell",command:"aspell"});CKEDITOR.dialog.add("aspell",this.path+"dialogs/aspell.js")},requires:["toolbar"]});
