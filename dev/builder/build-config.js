@@ -7,8 +7,8 @@
 
 /**
  * @egroupware
- * 
- * - Ignores samples and removes wsc plugin 
+ *
+ * - Ignores samples and removes wsc plugin
  */
 
 var CKBUILDER_CONFIG = {
@@ -37,10 +37,12 @@ var CKBUILDER_CONFIG = {
 		'README.md',
 		'tests',
 		'samples',
-		'nbproject'
+		'nbproject',
+		'plugins/aspell'
 	],
 	plugins : {
 		'a11yhelp' : 1,
+		'aspell' : 0,
 		'about' : 1,
 		'basicstyles' : 1,
 		'bidi' : 1,
