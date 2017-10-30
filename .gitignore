@@ -9,6 +9,7 @@
 
 node_modules/**
 build/**
+coverage/**
 
 dev/builder/ckbuilder/**
 dev/langtool/po/**
@@ -25,3 +26,6 @@ tests/plugins/mathjax/_assets/mathjax/**
 bender-*.log
 /nbproject/private/
 /nbproject
+
+!.github/*
+.DS_Store

@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
@@ -79,29 +79,26 @@ CKEDITOR.plugins.setLang( 'a11yhelp', 'el', {
 			{
 			name: 'Βοήθεια Προσβασιμότητας',
 			legend: 'Πατήστε ${a11yHelp}'
+		},
+			{
+			name: ' Paste as plain text', // MISSING
+			legend: 'Press ${pastetext}', // MISSING
+			legendEdge: 'Press ${pastetext}, followed by ${paste}' // MISSING
 		}
 		]
 	}
 	],
-	backspace: 'Backspace',
 	tab: 'Tab',
-	enter: 'Enter',
-	shift: 'Shift',
-	ctrl: 'Ctrl',
-	alt: 'Alt',
 	pause: 'Pause',
 	capslock: 'Caps Lock',
 	escape: 'Escape',
 	pageUp: 'Page Up',
 	pageDown: 'Page Down',
-	end: 'End',
-	home: 'Home',
 	leftArrow: 'Αριστερό Βέλος',
 	upArrow: 'Πάνω Βέλος',
 	rightArrow: 'Δεξί Βέλος',
 	downArrow: 'Κάτω Βέλος',
 	insert: 'Insert ',
-	'delete': 'Delete',
 	leftWindowKey: 'Αριστερό Πλήκτρο Windows',
 	rightWindowKey: 'Δεξί Πλήκτρο Windows',
 	selectKey: 'Πλήκτρο Select',

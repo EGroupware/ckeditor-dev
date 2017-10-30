@@ -1,4 +1,4 @@
-/* bender-tags: editor,unit */
+/* bender-tags: editor */
 /* global testVar, testVar1, testVar2, testVar3 */
 
 var tests = {
@@ -40,7 +40,8 @@ var tests = {
 	},
 
 	'test error event handling': function() {
-		if ( CKEDITOR.env.ie && CKEDITOR.env.version == 8 ) {
+		// Ignore for both IE8 and IE9.
+		if ( CKEDITOR.env.ie && CKEDITOR.env.version <= 9 ) {
 			assert.ignore();
 		}
 

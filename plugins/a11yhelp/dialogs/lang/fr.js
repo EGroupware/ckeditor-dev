@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
@@ -79,29 +79,26 @@ CKEDITOR.plugins.setLang( 'a11yhelp', 'fr', {
 			{
 			name: ' Aide sur l\'accessibilité',
 			legend: 'Appuyer sur ${a11yHelp}'
+		},
+			{
+			name: 'Coller comme texte sans mise en forme',
+			legend: 'Appuyer sur ${pastetext}',
+			legendEdge: 'Press ${pastetext}, followed by ${paste}' // MISSING
 		}
 		]
 	}
 	],
-	backspace: 'Retour arrière',
 	tab: 'Tabulation',
-	enter: 'Entrée',
-	shift: 'Majuscule',
-	ctrl: 'Ctrl',
-	alt: 'Alt',
 	pause: 'Pause',
 	capslock: 'Verr. Maj.',
 	escape: 'Échap',
 	pageUp: 'Page supérieure',
 	pageDown: 'Page suivante',
-	end: 'Fin',
-	home: 'Origine',
 	leftArrow: 'Flèche gauche',
 	upArrow: 'Flèche haut',
 	rightArrow: 'Flèche droite',
 	downArrow: 'Flèche basse',
 	insert: 'Inser',
-	'delete': 'Supprimer',
 	leftWindowKey: 'Touche Windows gauche',
 	rightWindowKey: 'Touche Windows droite',
 	selectKey: 'Touche Sélectionner',

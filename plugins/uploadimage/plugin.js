@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
@@ -53,10 +53,15 @@
 				},
 
 				onUploaded: function( upload ) {
+					// Width and height could be returned by server (http://dev.ckeditor.com/ticket/13519).
+					var $img = this.parts.img.$,
+						width = upload.responseData.width || $img.naturalWidth,
+						height = upload.responseData.height || $img.naturalHeight;
+
 					// Set width and height to prevent blinking.
 					this.replaceWith( '<img src="' + upload.url + '" ' +
-						'width="' + this.parts.img.$.naturalWidth + '" ' +
-						'height="' + this.parts.img.$.naturalHeight + '">' );
+						'width="' + width + '" ' +
+						'height="' + height + '">' );
 				}
 			} );
 
@@ -88,7 +93,7 @@
 					var isDataInSrc = img.getAttribute( 'src' ) && img.getAttribute( 'src' ).substring( 0, 5 ) == 'data:',
 						isRealObject = img.data( 'cke-realelement' ) === null;
 
-					// We are not uploading images in non-editable blocs and fake objects (#13003).
+					// We are not uploading images in non-editable blocs and fake objects (http://dev.ckeditor.com/ticket/13003).
 					if ( isDataInSrc && isRealObject && !img.data( 'cke-upload-id' ) && !img.isReadOnly( 1 ) ) {
 						var loader = editor.uploadRepository.create( img.getAttribute( 'src' ) );
 						loader.upload( uploadUrl );

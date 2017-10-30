@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
@@ -79,29 +79,26 @@ CKEDITOR.plugins.setLang( 'a11yhelp', 'mk', {
 			{
 			name: ' Accessibility Help', // MISSING
 			legend: 'Press ${a11yHelp}' // MISSING
+		},
+			{
+			name: ' Paste as plain text', // MISSING
+			legend: 'Press ${pastetext}', // MISSING
+			legendEdge: 'Press ${pastetext}, followed by ${paste}' // MISSING
 		}
 		]
 	}
 	],
-	backspace: 'Backspace',
 	tab: 'Tab',
-	enter: 'Enter',
-	shift: 'Shift',
-	ctrl: 'Ctrl',
-	alt: 'Alt',
 	pause: 'Пауза',
 	capslock: 'Caps Lock',
 	escape: 'Escape',
 	pageUp: 'Page Up',
 	pageDown: 'Page Up',
-	end: 'End',
-	home: 'Home',
 	leftArrow: 'Стрелка лево',
 	upArrow: 'Стрелка горе',
 	rightArrow: 'Стрелка десно',
 	downArrow: 'Стрелка доле',
 	insert: 'Insert',
-	'delete': 'Delete',
 	leftWindowKey: 'Лево Windows копче',
 	rightWindowKey: 'Десно Windows копче',
 	selectKey: 'Select копче',

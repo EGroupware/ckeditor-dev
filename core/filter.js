@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
@@ -158,7 +158,8 @@
 			},
 			// Object: element name => array of transformations groups.
 			transformations: {},
-			cachedTests: {}
+			cachedTests: {},
+			cachedChecks: {}
 		};
 
 		// Register filter instance.
@@ -299,7 +300,7 @@
 					if ( el.attributes[ 'data-cke-filter' ] == 'off' )
 						return false;
 
-					// (#10260) Don't touch elements like spans with data-cke-* attribute since they're
+					// (http://dev.ckeditor.com/ticket/10260) Don't touch elements like spans with data-cke-* attribute since they're
 					// responsible e.g. for placing markers, bookmarks, odds and stuff.
 					// We love 'em and we don't wanna lose anything during the filtering.
 					// '|' is to avoid tricky joints like data-="foo" + cke-="bar". Yes, they're possible.
@@ -346,7 +347,7 @@
 				if ( !element.parent )
 					continue;
 
-				// Handle custom elements as inline elements (#12683).
+				// Handle custom elements as inline elements (http://dev.ckeditor.com/ticket/12683).
 				parentDtd = DTD[ element.parent.name ] || DTD.span;
 
 				switch ( check.check ) {
@@ -804,6 +805,32 @@
 				return CKEDITOR.ENTER_BR;
 			};
 		} )(),
+
+		/**
+		 * Returns a clone of this filter instance.
+		 *
+		 * @since 4.7.3
+		 * @returns {CKEDITOR.filter}
+		 */
+		clone: function() {
+			var ret = new CKEDITOR.filter(),
+				clone = CKEDITOR.tools.clone;
+
+			// Cloning allowed content related things.
+			ret.allowedContent = clone( this.allowedContent );
+			ret._.allowedRules = clone( this._.allowedRules );
+
+			// Disallowed content rules.
+			ret.disallowedContent = clone( this.disallowedContent );
+			ret._.disallowedRules = clone( this._.disallowedRules );
+
+			ret._.transformations = clone( this._.transformations );
+
+			ret.disabled = this.disabled;
+			ret.editor = this.editor;
+
+			return ret;
+		},
 
 		/**
 		 * Destroys the filter instance and removes it from the global {@link CKEDITOR.filter#instances} object.
@@ -2069,8 +2096,8 @@
 		 * Converts length in the `styleName` style to a valid length attribute (like `width` or `height`).
 		 *
 		 * @param {CKEDITOR.htmlParser.element} element
-		 * @param {String} styleName Name of the style that will be converted.
-		 * @param {String} [attrName=styleName] Name of the attribute into which the style will be converted.
+		 * @param {String} styleName The name of the style that will be converted.
+		 * @param {String} [attrName=styleName] The name of the attribute into which the style will be converted.
 		 */
 		lengthToAttribute: function( element, styleName, attrName ) {
 			attrName = attrName || styleName;
@@ -2090,7 +2117,7 @@
 		},
 
 		/**
-		 * Converts the `align` attribute to the `float` style if not set. Attribute
+		 * Converts the `align` attribute to the `float` style if not set. The attribute
 		 * is always removed.
 		 *
 		 * @param {CKEDITOR.htmlParser.element} element
@@ -2108,7 +2135,7 @@
 
 		/**
 		 * Converts the `float` style to the `align` attribute if not set.
-		 * Style is always removed.
+		 * The style is always removed.
 		 *
 		 * @param {CKEDITOR.htmlParser.element} element
 		 */
@@ -2124,6 +2151,107 @@
 		},
 
 		/**
+		 * Converts the shorthand form of the `border` style to seperate styles.
+		 *
+		 * @param {CKEDITOR.htmlParser.element} element
+		 */
+		splitBorderShorthand: function( element ) {
+			if ( !element.styles.border ) {
+				return;
+			}
+
+			var widths = element.styles.border.match( /([\.\d]+\w+)/g ) || [ '0px' ];
+			switch ( widths.length ) {
+				case 1:
+					element.styles[ 'border-width' ] = widths[0];
+					break;
+				case 2:
+					mapStyles( [ 0, 1, 0, 1 ] );
+					break;
+				case 3:
+					mapStyles( [ 0, 1, 2, 1 ] );
+					break;
+				case 4:
+					mapStyles( [ 0, 1, 2, 3 ] );
+					break;
+			}
+
+			element.styles[ 'border-style' ] = element.styles[ 'border-style' ] ||
+				( element.styles.border.match( /(none|hidden|dotted|dashed|solid|double|groove|ridge|inset|outset|initial|inherit)/ ) || [] )[ 0 ];
+			if ( !element.styles[ 'border-style' ] )
+				delete element.styles[ 'border-style' ];
+
+			delete element.styles.border;
+
+			function mapStyles( map ) {
+				element.styles['border-top-width'] = widths[ map[0] ];
+				element.styles['border-right-width'] = widths[ map[1] ];
+				element.styles['border-bottom-width'] = widths[ map[2] ];
+				element.styles['border-left-width'] = widths[ map[3] ];
+			}
+		},
+
+		listTypeToStyle: function( element ) {
+			if ( element.attributes.type ) {
+				switch ( element.attributes.type ) {
+					case 'a':
+						element.styles[ 'list-style-type' ] = 'lower-alpha';
+						break;
+					case 'A':
+						element.styles[ 'list-style-type' ] = 'upper-alpha';
+						break;
+					case 'i':
+						element.styles[ 'list-style-type' ] = 'lower-roman';
+						break;
+					case 'I':
+						element.styles[ 'list-style-type' ] = 'upper-roman';
+						break;
+					case '1':
+						element.styles[ 'list-style-type' ] = 'decimal';
+						break;
+					default:
+						element.styles[ 'list-style-type' ] = element.attributes.type;
+				}
+			}
+		},
+
+		/**
+		 * Converts the shorthand form of the `margin` style to seperate styles.
+		 *
+		 * @param {CKEDITOR.htmlParser.element} element
+		 */
+		splitMarginShorthand: function( element ) {
+			if ( !element.styles.margin ) {
+				return;
+			}
+
+			var widths = element.styles.margin.match( /(\-?[\.\d]+\w+)/g ) || [ '0px' ];
+			switch ( widths.length ) {
+				case 1:
+					mapStyles( [ 0, 0, 0, 0 ] );
+					break;
+				case 2:
+					mapStyles( [ 0, 1, 0, 1 ] );
+					break;
+				case 3:
+					mapStyles( [ 0, 1, 2, 1 ] );
+					break;
+				case 4:
+					mapStyles( [ 0, 1, 2, 3 ] );
+					break;
+			}
+
+			delete element.styles.margin;
+
+			function mapStyles( map ) {
+				element.styles['margin-top'] = widths[ map[0] ];
+				element.styles['margin-right'] = widths[ map[1] ];
+				element.styles['margin-bottom'] = widths[ map[2] ];
+				element.styles['margin-left'] = widths[ map[3] ];
+			}
+		},
+
+		/**
 		 * Checks whether an element matches a given {@link CKEDITOR.style}.
 		 * The element can be a "superset" of a style, e.g. it may have
 		 * more classes, but needs to have at least those defined in the style.
@@ -2134,12 +2262,12 @@
 		matchesStyle: elementMatchesStyle,
 
 		/**
-		 * Transforms element to given form.
+		 * Transforms an element to a given form.
 		 *
 		 * Form may be a:
 		 *
 		 *	* {@link CKEDITOR.style},
-		 *	* string &ndash; the new name of an element.
+		 *	* string &ndash; the new name of the element.
 		 *
 		 * @param {CKEDITOR.htmlParser.element} el
 		 * @param {CKEDITOR.style/String} form
@@ -2190,7 +2318,7 @@
  *	* {@link CKEDITOR.filter.allowedContentRules} &ndash; defined rules will be added
  *	to the {@link CKEDITOR.editor#filter}.
  *	* `true` &ndash; will disable the filter (data will not be filtered,
- *	all features will be activated).
+ *	all features will be activated). Reading [security best practices](#!/guide/dev_best_practices) before setting `true` is recommended.
  *	* default &ndash; the filter will be configured by loaded features
  *	(toolbar items, commands, etc.).
  *

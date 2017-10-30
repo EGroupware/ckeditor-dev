@@ -1,4 +1,4 @@
-/* bender-tags: editor,unit */
+﻿/* bender-tags: editor */
 
 ( function() {
 	'use strict';
@@ -11,6 +11,11 @@
 	var htmlEncode = CKEDITOR.tools.htmlEncode,
 		htmlDecode = CKEDITOR.tools.htmlDecode;
 
+	bender.editor = {
+		config: {
+			language: 'en'
+		}
+	};
 	function assertNormalizeCssText( expected, input, message ) {
 		return function() {
 			assert.areSame( expected, CKEDITOR.tools.normalizeCssText( input ), message );
@@ -83,7 +88,7 @@
 			assert.areSame( '0', htmlEncode( 0 ), '0' );
 		},
 
-		'test htmlEncode - #3874': function() {
+		'test htmlEncode - http://dev.ckeditor.com/ticket/3874': function() {
 			assert.areSame( 'line1\nline2', htmlEncode( 'line1\nline2' ) );
 		},
 
@@ -330,7 +335,7 @@
 
 		testQuoteEntity: assertNormalizeCssText( 'font-family:"foo";', 'font-family: &quot;foo&quot;;', '' ),
 
-		// (#10750)
+		// (http://dev.ckeditor.com/ticket/10750)
 		'test Normalize double quote': assertNormalizeCssText( 'font-family:"crazy font";', 'font-family: "crazy font";',
 			'quoted font name' ),
 		'test Normalize single quote': assertNormalizeCssText( 'font-family:\'crazy font\';', 'font-family: \'crazy font\';',
@@ -384,7 +389,7 @@
 			assert.areSame( 'color:#010203; border-color:#ffff00;', c( 'color:rgb(1,2,3); border-color:rgb(255,255,0);' ), 'multiple' );
 		},
 
-		// #14252
+		// http://dev.ckeditor.com/ticket/14252
 		testNormalizeHex: function() {
 			var c = CKEDITOR.tools.normalizeHex;
 
@@ -703,6 +708,31 @@
 			assert.areEqual( token, CKEDITOR.tools.getCsrfToken(), 'getCsrfToken returns token from cookie' );
 		},
 
+		'test keystrokeToString': function() {
+			var toString = CKEDITOR.tools.keystrokeToString,
+				lang = this.editor.lang.common.keyboard,
+				tests = [
+					// [ Keystroke, display string, display string on Mac, ARIA string, ARIA string on Mac ]
+					[ CKEDITOR.CTRL + 65 /*A*/, 'Ctrl+A', '⌘+A', 'Ctrl+A', 'Command+A' ],
+					[ CKEDITOR.ALT + 66 /*B*/, 'Alt+B', '⌥+B', 'Alt+B', 'Alt+B' ],
+					[ CKEDITOR.SHIFT + 67 /*C*/, 'Shift+C', '⇧+C', 'Shift+C', 'Shift+C' ],
+					[ CKEDITOR.CTRL + CKEDITOR.ALT + 68 /*D*/, 'Ctrl+Alt+D', '⌘+⌥+D', 'Ctrl+Alt+D', 'Command+Alt+D' ],
+					[ CKEDITOR.CTRL + CKEDITOR.SHIFT + 69 /*E*/, 'Ctrl+Shift+E', '⌘+⇧+E', 'Ctrl+Shift+E', 'Command+Shift+E' ],
+					[ CKEDITOR.ALT + CKEDITOR.SHIFT + 70 /*F*/, 'Alt+Shift+F', '⌥+⇧+F', 'Alt+Shift+F', 'Alt+Shift+F' ],
+					[ CKEDITOR.CTRL + CKEDITOR.ALT + CKEDITOR.SHIFT + 71 /*G*/, 'Ctrl+Alt+Shift+G', '⌘+⌥+⇧+G', 'Ctrl+Alt+Shift+G', 'Command+Alt+Shift+G' ],
+					[ CKEDITOR.CTRL + 32 /*SPACE*/, 'Ctrl+Space', '⌘+Space', 'Ctrl+Space', 'Command+Space' ],
+					[ CKEDITOR.ALT + 13 /*ENTER*/, 'Alt+Enter', '⌥+Enter', 'Alt+Enter', 'Alt+Enter' ]
+				],
+				test,
+				expIndex = CKEDITOR.env.mac ? 2 : 1;
+
+			for ( var i = 0, l = tests.length; i < l; i++ ) {
+				test = tests[ i ];
+				assert.areEqual( test[ expIndex ], toString( lang, test[ 0 ] ).display, 'Keystroke display string representation is invalid.' );
+				assert.areEqual( test[ expIndex + 2 ], toString( lang, test[ 0 ] ).aria, 'Keystroke ARIA string representation is invalid.' );
+			}
+		},
+
 		'test escapeCss - invalid selector': function() {
 			var selector;
 			var escapedSelector = CKEDITOR.tools.escapeCss( selector );
@@ -743,6 +773,33 @@
 
 			// Check standard selector.
 			assert.areSame( escapedSelector, 'aaa', 'standard selector' );
+		},
+
+		// #810
+		'test getMouseButton': function() {
+			var isIe8 = CKEDITOR.env.ie && CKEDITOR.env.version < 9;
+
+			function generateMouseButtonAsserts( inputs ) {
+				function generateEvent( button ) {
+					return {
+						data: {
+							$: {
+								button: button
+							}
+						}
+					};
+				}
+
+				CKEDITOR.tools.array.forEach( inputs, function( input ) {
+					assert.areSame( input[ 0 ], CKEDITOR.tools.getMouseButton( generateEvent( input[ 1 ] ) ) );
+				} );
+			}
+
+			generateMouseButtonAsserts( [
+				[ CKEDITOR.MOUSE_BUTTON_LEFT, isIe8 ? 1 : CKEDITOR.MOUSE_BUTTON_LEFT ],
+				[ CKEDITOR.MOUSE_BUTTON_MIDDLE, isIe8 ? 4 : CKEDITOR.MOUSE_BUTTON_MIDDLE ],
+				[ CKEDITOR.MOUSE_BUTTON_RIGHT, isIe8 ? 2 : CKEDITOR.MOUSE_BUTTON_RIGHT ]
+			] );
 		}
 	} );
 } )();

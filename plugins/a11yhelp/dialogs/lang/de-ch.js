@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
@@ -79,29 +79,26 @@ CKEDITOR.plugins.setLang( 'a11yhelp', 'de-ch', {
 			{
 			name: 'Eingabehilfen',
 			legend: 'Drücken Sie ${a11yHelp}'
+		},
+			{
+			name: ' Paste as plain text', // MISSING
+			legend: 'Press ${pastetext}', // MISSING
+			legendEdge: 'Press ${pastetext}, followed by ${paste}' // MISSING
 		}
 		]
 	}
 	],
-	backspace: 'Rücktaste',
 	tab: 'Tab',
-	enter: 'Eingabe',
-	shift: 'Umschalt',
-	ctrl: 'Strg',
-	alt: 'Alt',
 	pause: 'Pause',
 	capslock: 'Feststell',
 	escape: 'Escape',
 	pageUp: 'Bild auf',
 	pageDown: 'Bild ab',
-	end: 'Ende',
-	home: 'Pos1',
 	leftArrow: 'Linke Pfeiltaste',
 	upArrow: 'Obere Pfeiltaste',
 	rightArrow: 'Rechte Pfeiltaste',
 	downArrow: 'Untere Pfeiltaste',
 	insert: 'Einfügen',
-	'delete': 'Entfernen',
 	leftWindowKey: 'Linke Windowstaste',
 	rightWindowKey: 'Rechte Windowstaste',
 	selectKey: 'Taste auswählen',
